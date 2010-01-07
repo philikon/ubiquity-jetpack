@@ -11,3 +11,10 @@ function onDelayedTabOpen() {
 }
 tabbrowser.addEventListener('TabOpen',
   function(event) { setTimeout(onDelayedTabOpen, 0); }, true);
+
+
+/* Close Ubiquity when closing a tab */
+function onTabClose(event) {
+  wm.getMostRecentWindow("navigator:browser").window.gUbiquity.closeWindow();
+}
+tabbrowser.addEventListener('TabClose', onTabClose, true);
