@@ -23,7 +23,22 @@ function expandURL(node) {
 function attachLinkEventHandler(event) {
     var links = $(jetpack.tabs.focused.contentDocument)
         .find("a[href]:not(.jetpack-expandurl-bound')");
-    links.mouseleave(function() {expandURL(this);});
+    links.bind("mousedown.jetpack-expandurl", function(event) {
+                   if (event.which != 1) {
+                       return;
+                   }
+                   console.log("mousedown " + event.which);
+                   var doexpand = true;
+                   $(this).bind("mouseup.jetpack-expandurl", function(event) {
+                                    doexpand = false;
+                                });
+                   setTimeout(function() {
+                                  if (doexpand) {
+                                      expandURL(this);
+                                  }
+                              }, 100);
+                   $(this).unbind(".jetpack-expandurl");
+               });
     links.addClass("jetpack-expandurl-bound");
 }
 
