@@ -24,17 +24,23 @@ function attachLinkEventHandler(event) {
     var links = $(jetpack.tabs.focused.contentDocument)
         .find("a[href]:not(.jetpack-expandurl-bound')");
     links.bind("mousedown.jetpack-expandurl", function(event) {
+                   /* Only trigger on left click */
                    if (event.which != 1) {
                        return;
                    }
+
                    console.log("mousedown " + event.which);
+
                    var doexpand = true;
                    $(this).bind("mouseup.jetpack-expandurl", function(event) {
                                     doexpand = false;
                                 });
+
+                   /* 'this' changes in the setTimeout scope */
+                   var self = this;
                    setTimeout(function() {
                                   if (doexpand) {
-                                      expandURL(this);
+                                      expandURL(self);
                                   }
                               }, 100);
                    $(this).unbind(".jetpack-expandurl");
